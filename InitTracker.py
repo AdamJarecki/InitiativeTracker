@@ -63,5 +63,28 @@ class Character():
         return self.totalInitiative
     
     
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#
+# This is the Initiative Tracker Class, which will add characters, roll initiative for 
+#      those characters, and then organize the initiative tracker in initiative order
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+class InitiativeTracker:
+    def __init__(self):
+        self.characters = []
+
+    def addCharacter(self, character):
+        self.characters.append(character)
+
+    def rollInitiative(self):
+        for character in self.characters:
+            character.rollInitiative()
+        self.characters.sort(reverse=True, key=lambda x: x.totalInitiative)
+
+    def displayInitiativeOrder(self):
+        print("Initiative Order:")
+        for i, character in enumerate(self.characters, start=1):
+            print(f"{i}. {character.name} - Initiative: {character.totalInitiative}")
 
 
