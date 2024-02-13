@@ -17,9 +17,7 @@ class Character():
         self.totalInitiative = 0
     
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-    #
     # Setter and Getter functions
-    # 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
     def setName(self, name):
@@ -52,24 +50,17 @@ class Character():
     def getTotalInitiative(self):
         return self.totalInitiative
 
-    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-    #
-    # Function to roll initiative for a specific character
-    #
-    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
     def rollInitiative(self):
+        # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+        # Function to roll initiative for a specific character
+        # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
         self.totalInitiative = self.initiativeBonus + random.randint(1,20)
         return self.totalInitiative
-    
-    
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#
 # This is the Initiative Tracker Class, which will add characters, roll initiative for 
 #      those characters, and then organize the initiative tracker in initiative order
-#
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
 class InitiativeTracker:
     def __init__(self):
         self.characters = []
