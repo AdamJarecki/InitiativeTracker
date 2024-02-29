@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(50), unique=True)
-    is_player = db.Column(db.Boolean)
+    is_player = db.Column(db.Integer)
     characters = db.relationship('Character')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
