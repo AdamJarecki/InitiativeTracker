@@ -13,9 +13,9 @@
 
         <div style="display: inline-block;">
             <label for="player_group">Group Type:</label>
-            <input type="checkbox" id="player_group" name="group_type" value="player" checked>
+            <input type="checkbox" id="player_group" name="is_player" value="true" checked>
             <label for="player_group">Player Group</label>
-            <input type="checkbox" id="enemy_group" name="group_type" value="enemy">
+            <input type="checkbox" id="enemy_group" name="is_player" value="false">
             <label for="enemy_group">Enemy Group</label>
         </div>
     </div><br><br>
@@ -31,7 +31,7 @@
     </div><br><br>
 
     <div align='center'>
-        <button type="button" id="add_row_button" class="btn btn-secondary">Add Row</button> <!-- Button to add a new row -->
+        <button type="button" id="add_row_button" class="btn btn-secondary">Add Row</button>
         <button type='submit' class='btn btn-primary'>Submit</button>
     </div>
 </form>
@@ -70,6 +70,12 @@
     // Attach delete button handlers for existing rows
     attachDeleteHandlers();
 </script>
+
+<!-- 
+    
+    This script makes sure that only one of the checkboxes can be checked at a time.
+
+-->
 <script>
     // Function to handle checkbox toggling
     function handleCheckboxToggle(checkbox) {
