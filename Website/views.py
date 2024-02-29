@@ -13,9 +13,9 @@ def home():
 @views.route('/create-group')
 @login_required
 def create_group():
-    return render_template("create-group.html")
+    return render_template("create-group.html", user=current_user)
 
 @views.route('/initiative-tracker')
 @login_required
 def initiative_tracker():
-    return render_template("initiative-tracker.html")
+    return render_template("initiative-tracker.html", user=current_user)

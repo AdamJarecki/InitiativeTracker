@@ -4,7 +4,97 @@
 
 {% block content %}
 
-<h1></h1>
-<h1 align="center">Create your enemy and player groups here!</h1>
+<h1 align="center">Create your enemy and player groups here!</h1><br><br><br>
+
+<form method='POST'>
+    <div align='center'>    
+        <label for="group_name">Group Name:</label>
+        <input type="text" id="group_name" name="group_name" class="form-control" placeholder='Group Name'><br>
+
+        <div style="display: inline-block;">
+            <label for="player_group">Group Type:</label>
+            <input type="checkbox" id="player_group" name="group_type" value="player" checked>
+            <label for="player_group">Player Group</label>
+            <input type="checkbox" id="enemy_group" name="group_type" value="enemy">
+            <label for="enemy_group">Enemy Group</label>
+        </div>
+    </div><br><br>
+    
+    <div align='center' id="characters">
+        <div class="character" style="display: inline-block;">
+            <label for="char_name_1">Character Name:</label>
+            <input type="text" id="char_name_1" name="char_name[]" class="form-control" style="width: 500px;" placeholder='Character Name'>
+            <label for="initiative_1">Initiative Score:</label>
+            <input type="number" id="initiative_1" name="initiative[]" class="form-control" placeholder='Initiative Bonus'>
+            <button type="button" class="btn btn-danger delete-row">Delete</button>
+        </div>
+    </div><br><br>
+
+    <div align='center'>
+        <button type="button" id="add_row_button" class="btn btn-secondary">Add Row</button> <!-- Button to add a new row -->
+        <button type='submit' class='btn btn-primary'>Submit</button>
+    </div>
+</form>
+
+<script>
+    // Function to add a new row of input fields
+    function addRow() {
+        var rowCount = document.querySelectorAll('.character').length + 1;
+        var newRow = document.createElement("div");
+        newRow.classList.add("character");
+        newRow.style.display = "inline-block";
+        newRow.innerHTML = `
+            <label for="char_name_${rowCount}">Character Name:</label>
+            <input type="text" id="char_name_${rowCount}" name="char_name[]" class="form-control" style="width: 500px;" placeholder='Character Name'>
+            <label for="initiative_${rowCount}">Initiative Score:</label>
+            <input type="number" id="initiative_${rowCount}" name="initiative[]" class="form-control" placeholder='Initiative Bonus'>
+            <button type="button" class="btn btn-danger delete-row">Delete</button>
+        `;
+        document.getElementById("characters").appendChild(newRow);
+        attachDeleteHandlers(); // Attach delete button handlers
+    }
+
+    // Function to attach delete button handlers
+    function attachDeleteHandlers() {
+        var deleteButtons = document.querySelectorAll('.delete-row');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                this.parentNode.remove(); // Remove the parent element (the entire row)
+            });
+        });
+    }
+
+    // Add event listener to the "Add Row" button
+    document.getElementById("add_row_button").addEventListener("click", addRow);
+
+    // Attach delete button handlers for existing rows
+    attachDeleteHandlers();
+</script>
+<script>
+    // Function to handle checkbox toggling
+    function handleCheckboxToggle(checkbox) {
+        if (checkbox.id === "player_group" && checkbox.checked) {
+            document.getElementById("enemy_group").checked = false;
+        } else if (checkbox.id === "enemy_group" && checkbox.checked) {
+            document.getElementById("player_group").checked = false;
+        }
+    }
+
+    // Get player group and enemy group checkboxes
+    var playerGroupCheckbox = document.getElementById("player_group");
+    var enemyGroupCheckbox = document.getElementById("enemy_group");
+
+    // Add event listener to player group checkbox
+    playerGroupCheckbox.addEventListener("change", function() {
+        handleCheckboxToggle(playerGroupCheckbox);
+    });
+
+    // Add event listener to enemy group checkbox
+    enemyGroupCheckbox.addEventListener("change", function() {
+        handleCheckboxToggle(enemyGroupCheckbox);
+    });
+</script>
 
 {% endblock %}
+
+
