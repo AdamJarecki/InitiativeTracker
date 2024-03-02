@@ -16,7 +16,7 @@ def home():
 def create_group():
     if request.method == 'POST':
         group_name = request.form.get('group_name')
-        is_player = request.form.get('is_player')
+        is_player = bool(int(request.form.get('is_player')))
         initiative_bonus = request.form.get('initiative_bonus')
         
         # Create a new Group object
