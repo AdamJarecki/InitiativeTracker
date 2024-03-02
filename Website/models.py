@@ -21,8 +21,3 @@ class Character(db.Model):
     character_name = db.Column(db.String(50))
     initiative_bonus = db.Column(db.Integer)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    
-'''class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(10000))
-    date = db.Column(db.DateTime(timezone=True), default=func.now)'''
