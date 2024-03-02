@@ -8,7 +8,10 @@ views = Blueprint('views', __name__)
 @views.route('/')
 @login_required
 def home():
-    return render_template("home.html", user=current_user)
+    if not current_user.is_authenticated:
+        return redirect(url_for('login.html'))
+    else:
+        return render_template("home.html", user=current_user)  
     # the 'user=current_user' check's authentication
 
 @views.route('/create-group', methods=['GET', 'POST'])
