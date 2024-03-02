@@ -7,4 +7,37 @@
 <h1></h1>
 <h1 align="center">Come here to edit your groups!</h1>
 
+<form id="groupForm">
+    <select name="group" id="groupSelect">
+        {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+        {% endfor %}
+    </select>
+</form>
+<div id="playersList"></div>
+
+
+<script>
+    document.getElementById('groupSelect').addEventListener('change', function() {
+        var groupId = this.value;
+        fetch('/get-players', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'group_id=' + groupId
+        })
+        .then(response => response.json())
+        .then(data => {
+            var playersList = document.getElementById('playersList');
+            playersList.innerHTML = ''; // Clear previous list
+            data.forEach(player => {
+                playersList.innerHTML += '<p>' + player + '</p>'; // Add player to list
+            });
+        });
+    });
+</script>
+
+
+
 {% endblock %}

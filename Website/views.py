@@ -51,7 +51,8 @@ def initiative_tracker():
     groups = Group.query.filter_by(user_id=current_user.id).all()
     return render_template("initiative-tracker.html", user=current_user)
 
-@views.route('/edit-group')
+@views.route('/edit-group', methods=['GET', 'POST'])
 @login_required
 def edit_group():
-    return render_template("edit-group.html", user=current_user)
+    groups = Group.query.all()
+    return render_template("edit-group.html", groups=groups, user=current_user)
