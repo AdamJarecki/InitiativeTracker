@@ -28,13 +28,14 @@ def create_group():
             # Add the group to the database and commit changes
             db.session.add(new_group)
             db.session.commit()
+            # The variable names that these are pulling from ('char_name[]' and 'initiative[]') are pulled from the create-group.html file.
             character_names = request.form.getlist('char_name[]')
             initiative_bonuses = request.form.getlist('initiative[]')
-
+            # this adds the players to the DB, by looping through all the inputs
             for name, bonus in zip(character_names, initiative_bonuses):
                 new_character = Character(character_name=name, initiative_bonus=bonus, group_id=new_group.id)
                 db.session.add(new_character)
-
+            # this one commit's the new players after adding them. I'm not sure if I need both db.session.commit() functions, but it feels safer to keep both
             db.session.commit()
 
             flash('Group created successfully!', category='success')
