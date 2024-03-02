@@ -19,7 +19,7 @@ def home():
 def create_group():
     if request.method == 'POST':
         group_name = request.form.get('group_name')
-        if existing_group := Group.query.filter_by(group_name=group_name).first():
+        if group_name := Group.query.filter_by(group_name=group_name).first():
             flash('A group with this name already exists!', category='failure')
         else:
             is_player = bool(int(request.form.get('is_player')))
