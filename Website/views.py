@@ -9,7 +9,7 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     if not current_user.is_authenticated:
-        return redirect(url_for('login.html'))
+        return redirect(url_for('login'))
     else:
         return render_template("home.html", user=current_user)  
     # the 'user=current_user' check's authentication
@@ -17,33 +17,32 @@ def home():
 @views.route('/create-group', methods=['GET', 'POST'])
 @login_required
 def create_group():
-    if request.method != 'POST':
-        return render_template("create-group.html", user=current_user)
-    group_name = request.form.get('group_name')
-    is_player = bool(int(request.form.get('is_player')))
+    if request.method == 'POST':
+        group_name = request.form.get('group_name')
+        if existing_group := Group.query.filter_by(group_name=group_name).first():
+            flash('A group with this name already exists!', category='failure')
+        else:
+            is_player = bool(int(request.form.get('is_player')))
+            # Create a new Group object
+            new_group = Group(group_name=group_name, is_player=is_player, user_id=current_user.id)
+            # Add the group to the database and commit changes
+            db.session.add(new_group)
+            db.session.commit()
+            character_names = request.form.getlist('char_name[]')
+            initiative_bonuses = request.form.getlist('initiative[]')
 
-    # initiative_bonus = request.form.get('initiative_bonus')
+            for name, bonus in zip(character_names, initiative_bonuses):
+                new_character = Character(character_name=name, initiative_bonus=bonus, group_id=new_group.id)
+                db.session.add(new_character)
 
-    # Create a new Group object
-    new_group = Group(group_name=group_name, is_player=is_player, user_id=current_user.id)
+            db.session.commit()
 
-    # Add the group to the database and commit changes
-    db.session.add(new_group)
-    db.session.commit()
+            flash('Group created successfully!', category='success')
 
-    character_names = request.form.getlist('character_name[]')
-    initiative_bonuses = request.form.getlist('initiative_bonus[]')
+            # Redirect to the initiative tracker page
+            return redirect(url_for('views.initiative_tracker'))
 
-    for name, bonus in zip(character_names, initiative_bonuses):
-        new_character = Character(character_name=name, initiative_bonus=bonus, group_id=new_group.id)
-        db.session.add(new_character)
-
-    db.session.commit()
-
-    flash('Group created successfully!', category='success')
-
-    # Redirect to the initiative tracker page
-    return redirect(url_for('views.initiative_tracker'))
+    return render_template("create-group.html", user=current_user)
 
 @views.route('/initiative-tracker')
 @login_required
