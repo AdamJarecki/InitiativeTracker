@@ -54,14 +54,56 @@ def initiative_tracker():
 @views.route('/edit-group', methods=['GET', 'POST'])
 @login_required
 def edit_group():
-    groups = Group.query.all()
+    groups = Group.query.all()  # Fetch all groups for the dropdown
+
+    if request.method == 'POST':
+        # Retrieve the selected group's ID from the form data
+        selected_group_id = request.form.get('group')
+        if group := Group.query.get(selected_group_id):
+            # Retrieve character names and initiative bonuses from the form
+            character_names = request.form.getlist('char_name[]')
+            initiative_bonuses = request.form.getlist('initiative[]')
+
+            # Add the new characters to the DB, associating them with the selected group
+            for name, bonus in zip(character_names, initiative_bonuses):
+                new_character = Character(character_name=name, initiative_bonus=bonus, group_id=group.id)
+                db.session.add(new_character)
+
+            db.session.commit()  # Commit once after adding all new characters
+
+            flash('Group updated successfully!', category='success')
+        else:
+            flash('Selected group not found.', category='error')
+
     return render_template("edit-group.html", groups=groups, user=current_user)
+
 
 @views.route('/get-characters', methods=['GET', 'POST'])
 @login_required
 def get_characters():
     if group_id := request.args.get('group_id'):
         characters = Character.query.filter_by(group_id=group_id).all()
-        character_data = [{'id': char.id, 'name': char.character_name} for char in characters]
+        character_data = [{'id': char.id, 'name': char.character_name, 'initiative_bonus': char.initiative_bonus} for char in characters]
         return jsonify({'characters': character_data})
     return jsonify({'characters': []})
+
+@views.route('/delete-character', methods=['POST'])
+@login_required
+def delete_character():
+    character_id = request.form.get('character_id')
+    if character := Character.query.get(character_id):
+        db.session.delete(character)
+        db.session.commit()
+        return jsonify({'success': 'Character deleted successfully'}), 200
+    return jsonify({'error': 'Character not found'}), 404
+
+
+@views.route('/delete-group/<int:group_id>', methods=['DELETE'])
+@login_required
+def delete_group(group_id):
+    group = Group.query.get_or_404(group_id)
+    if group.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+    db.session.delete(group)
+    db.session.commit()
+    return jsonify({'success': 'Group deleted successfully'}), 200
