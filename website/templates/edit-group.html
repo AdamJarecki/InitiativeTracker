@@ -9,17 +9,16 @@
 <br><br>
 
 <div align='center'>
+
+
+
 <form id="groupForm">
     <select name="group" id="groupSelect">
         {% for group in groups %}
             <option value="{{ group.id }}">{{ group.group_name }}</option>
         {% endfor %}
     </select>
-</form>
-</div>
-
-<br>
-
+<!-- This next section adds the table -->
 <div align="center">
     <table id="playersTable" style="width: 60%; margin-top: 20px; border-collapse: collapse;" border="3">
         <thead>
@@ -36,41 +35,82 @@
         </tbody>
     </table>
 </div>
+<br><br><br>
+
+
+<!-- THis next portion adds an 'add character' function to the page -->
+<h3>Add new characters to the Group below!</h3>
+    <div align='center' id="characters">
+        <div class="character" style="display: inline-block;">
+            <label for="char_name_1">Character Name:</label>
+            <input type="text" id="char_name_1" name="char_name[]" class="form-control" style="width: 500px;" placeholder='Character Name'>
+            <label for="initiative_1">Initiative Score:</label>
+            <input type="number" id="initiative_1" name="initiative[]" class="form-control" placeholder='Initiative Bonus'>
+            <button type="button" class="btn btn-danger delete-row">Delete</button>
+        </div>
+    </div><br><br>
+
+    <div align='center'>
+        <button type="button" id="add_row_button" class="btn btn-secondary">Add Row</button>
+        <button type='submit' class='btn btn-primary'>Submit</button>
+    </div>
+</form>
+</div>
+
+<br>
+
+
 
 <script>
-document.getElementById('groupSelect').addEventListener('change', function() {
-    var groupId = this.value; // Get the selected group's ID
-    fetch(`/get-characters?group_id=${groupId}`) // Make a request to the Flask route
-        .then(response => response.json())
-        .then(data => {
-            var tableBody = document.querySelector('#playersTable tbody');
-            tableBody.innerHTML = ''; // Clear existing rows
-            data.characters.forEach(character => {
-                var row = document.createElement('tr');
-                var nameCell = document.createElement('td');
-                var bonusCell = document.createElement('td');
-                var deleteCell = document.createElement('td');
-        
-                nameCell.textContent = character.name;
-                bonusCell.textContent = character.initiative_bonus; // Make sure this matches the JSON property name
-        
-                var deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'X';
-                deleteBtn.style.color = 'red';
-                deleteBtn.onclick = function() {
-                    // AJAX call to delete character
-                };
-        
-                deleteCell.appendChild(deleteBtn);
-        
-                row.appendChild(nameCell);
-                row.appendChild(bonusCell);
-                row.appendChild(deleteCell);
-        
-                tableBody.appendChild(row);
+    document.getElementById('groupSelect').addEventListener('change', function() {
+        var groupId = this.value; // Get the selected group's ID
+        fetch(`/get-characters?group_id=${groupId}`) // Make a request to the Flask route
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.querySelector('#playersTable tbody');
+                tableBody.innerHTML = ''; // Clear existing rows
+                data.characters.forEach(character => {
+                    var row = document.createElement('tr');
+                    var nameCell = document.createElement('td');
+                    var bonusCell = document.createElement('td');
+                    var deleteCell = document.createElement('td');
+            
+                    nameCell.textContent = character.name;
+                    bonusCell.textContent = character.initiative_bonus;
+            
+                    // Create the delete button
+                    var deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'X';
+                    deleteBtn.style.color = 'red';
+                    // Set onclick event for the delete button
+                    deleteBtn.onclick = function() {
+                        fetch('/delete-character', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `character_id=${character.id}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.success) {
+                                console.log(data.success); // Or handle the response in the UI, e.g., showing a success message
+                                row.remove(); // Remove the row from the table
+                            } else {
+                                console.error('Error:', data.error); // Handle failure, e.g., showing an error message
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    };
+            
+                    deleteCell.appendChild(deleteBtn);
+                    row.appendChild(nameCell);
+                    row.appendChild(bonusCell);
+                    row.appendChild(deleteCell);
+                    tableBody.appendChild(row);
+                });
             });
-        })
-});
+    });
 
 data.characters.forEach(character => {
     var row = document.createElement('tr');
@@ -106,6 +146,43 @@ data.characters.forEach(character => {
     tableBody.appendChild(row); // Add the row to the table body
 });
 
+</script>
+
+<!-- This script below is intended to add characters to the group -->
+
+<script>
+    // Function to add a new row of input fields
+    function addRow() {
+        var rowCount = document.querySelectorAll('.character').length + 1;
+        var newRow = document.createElement("div");
+        newRow.classList.add("character");
+        newRow.style.display = "inline-block";
+        newRow.innerHTML = `
+            <label for="char_name_${rowCount}">Character Name:</label>
+            <input type="text" id="char_name_${rowCount}" name="char_name[]" class="form-control" style="width: 500px;" placeholder='Character Name'>
+            <label for="initiative_${rowCount}">Initiative Score:</label>
+            <input type="number" id="initiative_${rowCount}" name="initiative[]" class="form-control" placeholder='Initiative Bonus'>
+            <button type="button" class="btn btn-danger delete-row">Delete</button>
+        `;
+        document.getElementById("characters").appendChild(newRow);
+        attachDeleteHandlers(); // Attach delete button handlers
+    }
+
+    // Function to attach delete button handlers
+    function attachDeleteHandlers() {
+        var deleteButtons = document.querySelectorAll('.delete-row');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                this.parentNode.remove(); // Remove the parent element (the entire row)
+            });
+        });
+    }
+
+    // Add event listener to the "Add Row" button
+    document.getElementById("add_row_button").addEventListener("click", addRow);
+
+    // Attach delete button handlers for existing rows
+    attachDeleteHandlers();
 </script>
 
 {% endblock %}
