@@ -4,6 +4,13 @@
 
 {% block content %}
 
+<style>
+    /* Center align the text in the table cells */
+    #playersTable th, #playersTable td {
+        text-align: center;
+    }
+</style>
+
 <h1 align="center">Come here to edit your groups!</h1>
 <h3 align='center'>Select the group you'd like to edit.</h3>
 <br><br>
@@ -23,11 +30,9 @@
     <table id="playersTable" style="width: 60%; margin-top: 20px; border-collapse: collapse;" border="3">
         <thead>
             <tr>
-                <div align='center'>
-                    <th>Character Name</th>
-                    <th>Initiative Bonus</th>
-                    <th>Delete</th>
-                </div>
+                <th>Character Name</th>
+                <th>Initiative Bonus</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -84,20 +89,21 @@
                     deleteBtn.style.color = 'red';
                     // Set onclick event for the delete button
                     deleteBtn.onclick = function() {
+                        const characterId = character.id; // Assuming `character.id` is available in this scope
                         fetch('/delete-character', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded',
                             },
-                            body: `character_id=${character.id}`
+                            body: `character_id=${characterId}`
                         })
                         .then(response => response.json())
                         .then(data => {
-                            if(data.success) {
-                                console.log(data.success); // Or handle the response in the UI, e.g., showing a success message
-                                row.remove(); // Remove the row from the table
+                            if (data.success) {
+                                console.log(data.success); // Log success message
+                                row.parentNode.removeChild(row); // Another way to remove the row
                             } else {
-                                console.error('Error:', data.error); // Handle failure, e.g., showing an error message
+                                console.error('Error:', data.error); // Log any errors
                             }
                         })
                         .catch(error => console.error('Error:', error));
