@@ -4,9 +4,8 @@
 
 {% block content %}
 
-<h1></h1>
 <h1 align="center">Come here to edit your groups!</h1>
-<h3 align='center'>Select the group you'd like to edit.</h1>
+<h3 align='center'>Select the group you'd like to edit.</h3>
 <br><br>
 
 <div align='center'>
@@ -19,30 +18,94 @@
 </form>
 </div>
 
+<br>
 
-<div id="playersList">
+<div align="center">
+    <table id="playersTable" style="width: 60%; margin-top: 20px; border-collapse: collapse;" border="3">
+        <thead>
+            <tr>
+                <div align='center'>
+                    <th>Character Name</th>
+                    <th>Initiative Bonus</th>
+                    <th>Delete</th>
+                </div>
+            </tr>
+        </thead>
+        <tbody>
 
+        </tbody>
+    </table>
 </div>
 
-
-
 <script>
-    document.getElementById('groupSelect').addEventListener('change', function() {
-        var groupId = this.value; // Get the selected group's ID
-        fetch(`/get-characters?group_id=${groupId}`) // Make a request to the Flask route
-            .then(response => response.json())
-            .then(data => {
-                var playersList = document.getElementById('playersList'); // Corrected to target 'playersList'
-                playersList.innerHTML = ''; // Clear existing characters
-                data.characters.forEach(character => { // Iterate over the characters returned from the Flask route
-                    var li = document.createElement('li');
-                    li.textContent = character.name; // Corrected to use 'name', matching JSON structure
-                    playersList.appendChild(li); // Add the character to the list
-                });
-            }).catch(error => console.error('Error:', error)); // Catch and log any errors
-    });
+document.getElementById('groupSelect').addEventListener('change', function() {
+    var groupId = this.value; // Get the selected group's ID
+    fetch(`/get-characters?group_id=${groupId}`) // Make a request to the Flask route
+        .then(response => response.json())
+        .then(data => {
+            var tableBody = document.querySelector('#playersTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+            data.characters.forEach(character => {
+                var row = document.createElement('tr');
+                var nameCell = document.createElement('td');
+                var bonusCell = document.createElement('td');
+                var deleteCell = document.createElement('td');
+        
+                nameCell.textContent = character.name;
+                bonusCell.textContent = character.initiative_bonus; // Make sure this matches the JSON property name
+        
+                var deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'X';
+                deleteBtn.style.color = 'red';
+                deleteBtn.onclick = function() {
+                    // AJAX call to delete character
+                };
+        
+                deleteCell.appendChild(deleteBtn);
+        
+                row.appendChild(nameCell);
+                row.appendChild(bonusCell);
+                row.appendChild(deleteCell);
+        
+                tableBody.appendChild(row);
+            });
+        })
+});
+
+data.characters.forEach(character => {
+    var row = document.createElement('tr');
+    var nameCell = document.createElement('td');
+    var bonusCell = document.createElement('td');
+    var deleteCell = document.createElement('td'); // Create a cell for the delete button
+
+    nameCell.textContent = character.name;
+    bonusCell.textContent = character.initiative_bonus;
+
+    var deleteBtn = document.createElement('button'); // Create the delete button
+    deleteBtn.textContent = 'X'; // Set button text to 'X'
+    deleteBtn.style.color = 'red'; // Set the color of the 'X' to red
+    deleteBtn.onclick = function() {
+        fetch('/delete-character', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `character_id=${character.id}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.success); // Or handle the response in the UI
+            row.remove(); // Remove the row from the table
+        })
+        .catch(error => console.error('Error:', error));
+    };
+    deleteCell.appendChild(deleteBtn); // Append the button to the delete cell
+    row.appendChild(nameCell);
+    row.appendChild(bonusCell);
+    row.appendChild(deleteCell); // Append the delete cell to the row
+    tableBody.appendChild(row); // Add the row to the table body
+});
+
 </script>
-
-
 
 {% endblock %}

@@ -62,6 +62,16 @@ def edit_group():
 def get_characters():
     if group_id := request.args.get('group_id'):
         characters = Character.query.filter_by(group_id=group_id).all()
-        character_data = [{'id': char.id, 'name': char.character_name} for char in characters]
+        character_data = [{'id': char.id, 'name': char.character_name, 'initiative_bonus': char.initiative_bonus} for char in characters]
         return jsonify({'characters': character_data})
     return jsonify({'characters': []})
+
+@views.route('/delete-character', methods=['POST'])
+@login_required
+def delete_character():
+    character_id = request.form.get('character_id')
+    if character := Character.query.get(character_id):
+        db.session.delete(character)
+        db.session.commit()
+        return jsonify({'success': 'Character deleted successfully'}), 200
+    return jsonify({'error': 'Character not found'}), 404
