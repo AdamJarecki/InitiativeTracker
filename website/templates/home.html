@@ -2,4 +2,26 @@
 
 {% block title %}Initiative Tracker Home{% endblock %}
 
-{% block content %}<h1></h1><h1 align="center">Welcome to the Initiative Tracker!</h1>{% endblock %}
+{% block content %}
+
+<h1></h1>
+<h1 align="center">Welcome to the Initiative Tracker!</h1>
+<h2 align='center'>What would you like to do?</h2>
+<br><br>
+
+<div align='center'>
+    <!-- Button to create a new group -->
+    <a href="{{ url_for('views.create_group') }}" class="btn btn-primary">Create New Group!</a>
+    <br><br><br>
+    
+    <!-- Button to edit an existing group -->
+    <!-- Assuming you have a view function to list groups for editing -->
+    <a href="{{ url_for('views.edit_group') }}" class="btn btn-secondary">Edit Existing Group!</a>
+    <br><br><br>
+    
+    <!-- Button to view the initiative tracker -->
+    <!-- Assuming you have a view function to show the initiative tracker -->
+    <a href="{{ url_for('views.initiative_tracker') }}" class="btn btn-success">View Initiative Tracker!</a>
+</div>
+
+{% endblock %}
