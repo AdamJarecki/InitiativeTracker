@@ -56,3 +56,12 @@ def initiative_tracker():
 def edit_group():
     groups = Group.query.all()
     return render_template("edit-group.html", groups=groups, user=current_user)
+
+@views.route('/get-characters', methods=['GET', 'POST'])
+@login_required
+def get_characters():
+    if group_id := request.args.get('group_id'):
+        characters = Character.query.filter_by(group_id=group_id).all()
+        character_data = [{'id': char.id, 'name': char.character_name} for char in characters]
+        return {'characters': character_data}
+    return {'characters': []}
