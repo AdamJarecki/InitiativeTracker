@@ -28,18 +28,18 @@
 
 <script>
     document.getElementById('groupSelect').addEventListener('change', function() {
-        var groupId = this.value;
-        fetch(`/get-characters?group_id=${groupId}`)
+        var groupId = this.value; // Get the selected group's ID
+        fetch(`/get-characters?group_id=${groupId}`) // Make a request to the Flask route
             .then(response => response.json())
             .then(data => {
-                var charactersList = document.getElementById('charactersList');
-                charactersList.innerHTML = '';
-                data.characters.forEach(character => {
+                var charactersList = document.getElementById('characters'); // Ensure this is the ID of your element for displaying characters
+                charactersList.innerHTML = ''; // Clear existing characters
+                data.characters.forEach(character => { // Iterate over the characters returned from the Flask route
                     var li = document.createElement('li');
                     li.textContent = character.character_name;
-                    charactersList.appendChild(li);
+                    charactersList.appendChild(li); // Add the character to the list
                 });
-            });
+            }).catch(error => console.error('Error:', error)); // Catch and log any errors
     });
 </script>
 

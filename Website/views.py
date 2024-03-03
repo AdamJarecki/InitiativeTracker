@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from .models import Group, db, Character
 
@@ -63,5 +63,5 @@ def get_characters():
     if group_id := request.args.get('group_id'):
         characters = Character.query.filter_by(group_id=group_id).all()
         character_data = [{'id': char.id, 'name': char.character_name} for char in characters]
-        return {'characters': character_data}
-    return {'characters': []}
+        return jsonify({'characters': character_data})
+    return jsonify({'characters': []})
