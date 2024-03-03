@@ -54,8 +54,29 @@ def initiative_tracker():
 @views.route('/edit-group', methods=['GET', 'POST'])
 @login_required
 def edit_group():
-    groups = Group.query.all()
+    groups = Group.query.all()  # Fetch all groups for the dropdown
+
+    if request.method == 'POST':
+        # Retrieve the selected group's ID from the form data
+        selected_group_id = request.form.get('group')
+        if group := Group.query.get(selected_group_id):
+            # Retrieve character names and initiative bonuses from the form
+            character_names = request.form.getlist('char_name[]')
+            initiative_bonuses = request.form.getlist('initiative[]')
+
+            # Add the new characters to the DB, associating them with the selected group
+            for name, bonus in zip(character_names, initiative_bonuses):
+                new_character = Character(character_name=name, initiative_bonus=bonus, group_id=group.id)
+                db.session.add(new_character)
+
+            db.session.commit()  # Commit once after adding all new characters
+
+            flash('Group updated successfully!', category='success')
+        else:
+            flash('Selected group not found.', category='error')
+
     return render_template("edit-group.html", groups=groups, user=current_user)
+
 
 @views.route('/get-characters', methods=['GET', 'POST'])
 @login_required

@@ -12,7 +12,7 @@
 
 
 
-<form id="groupForm">
+<form id="groupForm" method="POST" action="{{ url_for('views.edit_group')}}">
     <select name="group" id="groupSelect">
         {% for group in groups %}
             <option value="{{ group.id }}">{{ group.group_name }}</option>
@@ -39,7 +39,7 @@
 
 
 <!-- THis next portion adds an 'add character' function to the page -->
-<h3>Add new characters to the Group below!</h3>
+<h3>Add new characters to the selected Group below!</h3>
     <div align='center' id="characters">
         <div class="character" style="display: inline-block;">
             <label for="char_name_1">Character Name:</label>
