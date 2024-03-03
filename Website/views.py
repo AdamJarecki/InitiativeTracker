@@ -96,3 +96,14 @@ def delete_character():
         db.session.commit()
         return jsonify({'success': 'Character deleted successfully'}), 200
     return jsonify({'error': 'Character not found'}), 404
+
+
+@views.route('/delete-group/<int:group_id>', methods=['DELETE'])
+@login_required
+def delete_group(group_id):
+    group = Group.query.get_or_404(group_id)
+    if group.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+    db.session.delete(group)
+    db.session.commit()
+    return jsonify({'success': 'Group deleted successfully'}), 200
