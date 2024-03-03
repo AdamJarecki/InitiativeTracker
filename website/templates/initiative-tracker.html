@@ -7,6 +7,11 @@
 <h1></h1>
 <h1 align="center">Roll for Initiative!</h1>
 
+<form action="create-group.html">
+    <label for="">Player Group:</label>
+    <select name="is_player" id="player_group">
+      
+
 <ul class="list-group list-group-flush" id='groups'>
     {% for group in groups %}
         <li class='list-group-item'>{{group.characters}}</li>
