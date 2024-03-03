@@ -32,12 +32,12 @@
         fetch(`/get-characters?group_id=${groupId}`) // Make a request to the Flask route
             .then(response => response.json())
             .then(data => {
-                var charactersList = document.getElementById('characters'); // Ensure this is the ID of your element for displaying characters
-                charactersList.innerHTML = ''; // Clear existing characters
+                var playersList = document.getElementById('playersList'); // Corrected to target 'playersList'
+                playersList.innerHTML = ''; // Clear existing characters
                 data.characters.forEach(character => { // Iterate over the characters returned from the Flask route
                     var li = document.createElement('li');
-                    li.textContent = character.character_name;
-                    charactersList.appendChild(li); // Add the character to the list
+                    li.textContent = character.name; // Corrected to use 'name', matching JSON structure
+                    playersList.appendChild(li); // Add the character to the list
                 });
             }).catch(error => console.error('Error:', error)); // Catch and log any errors
     });
