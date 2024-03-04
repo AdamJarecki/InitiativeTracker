@@ -19,7 +19,8 @@ def home():
 def create_group():
     if request.method == 'POST':
         group_name = request.form.get('group_name')
-        if group_name := Group.query.filter_by(group_name=group_name).first():
+        existing_group = Group.query.filter_by(group_name=group_name).first()
+        if existing_group:
             flash('A group with this name already exists!', category='failure')
         else:
             is_player = bool(int(request.form.get('is_player')))
@@ -54,7 +55,7 @@ def initiative_tracker():
 @views.route('/edit-group', methods=['GET', 'POST'])
 @login_required
 def edit_group():
-    groups = Group.query.all()  # Fetch all groups for the dropdown
+    groups = Group.query.filter_by(user_id=current_user.id).all()  # Fetch all groups for the dropdown
 
     if request.method == 'POST':
         # Retrieve the selected group's ID from the form data
