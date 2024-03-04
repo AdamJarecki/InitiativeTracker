@@ -3,6 +3,8 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
+import re
+
 
 auth = Blueprint('auth', __name__)
 
@@ -40,6 +42,9 @@ def sign_up():
         first_name = request.form.get('first_name')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        lowercase_check = re.compile(r'[a-z]')
+        uppercase_check = re.compile(r'[A-Z]')
+        symbol_check = re.compile(r'[\W_]')  # \W matches any non-word character, _ is included to consider it as a symbol
 
         if user := User.query.filter_by(email=email).first():
             flash('Email already registered.', category='failure')
@@ -52,6 +57,9 @@ def sign_up():
             flash('Passwords don\'t match!', category='failure')
         elif len(password1) < 8:
             flash('Password must be at least 8 characters!', category='failure')
+        elif not (lowercase_check.search(password1) and uppercase_check.search(password1) and symbol_check.search(password1)):
+                # Check if the password meets the complexity requirements
+                flash('Password must contain at least one lowercase letter, one uppercase letter, and one symbol.', category='failure')            
         else:
             # add user to database
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, method='pbkdf2:sha256'))
