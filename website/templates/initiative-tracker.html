@@ -7,6 +7,28 @@
 <h1></h1>
 <h1 align="center">Roll for Initiative!</h1>
 
+<form action="initiative-tracker.html">
+    <div  style ="text-align:center;">
+    <label for = " ">Player Group:</label>
+    
+    <select name="is_player = true" id="player_group">
+        <option value="Test">Test</option>
+    </select>
+    <br><br>
+  </form>
+    </div>
+
+<form action="initiative-tracker.html">
+    <div  style ="text-align:center;">
+    <label for =" ">Enemy Group:</label>
+    
+    <select name="is_player = false" id="enemy_group">
+        <option value="Test">Test</option>
+    </select>
+    <br><br>
+  </form>
+     </div>
+
 <ul class="list-group list-group-flush" id='groups'>
     {% for group in groups %}
         <li class='list-group-item'>{{group.characters}}</li>
