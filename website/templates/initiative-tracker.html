@@ -10,22 +10,24 @@
 <form action="initiative-tracker.html">
     <div  style ="text-align:center;">
     <label for = " ">Player Group:</label>
-    </div>
+    
     <select name="is_player = true" id="player_group">
         <option value="Test">Test</option>
     </select>
     <br><br>
-  </form>player
+  </form>
+    </div>
 
 <form action="initiative-tracker.html">
     <div  style ="text-align:center;">
     <label for =" ">Enemy Group:</label>
-    </div>
+    
     <select name="is_player = false" id="enemy_group">
         <option value="Test">Test</option>
     </select>
     <br><br>
-  </form>player
+  </form>
+     </div>
 
 <ul class="list-group list-group-flush" id='groups'>
     {% for group in groups %}
