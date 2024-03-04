@@ -19,10 +19,12 @@
 
     <form id="groupForm" method="POST" action="{{ url_for('views.edit_group')}}">
         <select name="group" id="groupSelect">
+            <option value="" disabled selected>Select a group</option>
             {% for group in groups %}
                 <option value="{{ group.id }}">{{ group.group_name }}</option>
             {% endfor %}
         </select>
+
         <!-- This button will be used to delete the selected group -->
         <button type="button" id="deleteGroupBtn" class="btn btn-danger">Delete Group</button>
     <!-- This next section adds the table -->
@@ -84,7 +86,7 @@
                     deleteBtn.style.color = 'red';
                     // Set onclick event for the delete button
                     deleteBtn.onclick = function() {
-                        const characterId = character.id; // Assuming `character.id` is available in this scope
+                        const characterId = character.id;
                         fetch('/delete-character', {
                             method: 'POST',
                             headers: {
@@ -96,7 +98,7 @@
                         .then(data => {
                             if (data.success) {
                                 console.log(data.success); // Log success message
-                                row.parentNode.removeChild(row); // Another way to remove the row
+                                row.parentNode.removeChild(row); // Remove the row
                             } else {
                                 console.error('Error:', data.error); // Log any errors
                             }
@@ -135,7 +137,7 @@ data.characters.forEach(character => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data.success); // Or handle the response in the UI
+            console.log(data.success); // handle the response in the UI
             row.remove(); // Remove the row from the table
         })
         .catch(error => console.error('Error:', error));
@@ -172,7 +174,7 @@ data.characters.forEach(character => {
     // Initially, no rows are displayed. The first row is added when the "Add Row" button is clicked.
     document.getElementById("add_row_button").addEventListener("click", addRow);
     
-    // Since initially no rows are displayed, this might be called on the first row addition
+    // Since initially no rows are displayed, this calls on the first row addition
     function attachDeleteHandlers() {
         var deleteButtons = document.querySelectorAll('.delete-row');
         deleteButtons.forEach(function(button) {
@@ -190,7 +192,7 @@ data.characters.forEach(character => {
     attachDeleteHandlers();
 </script>
 
-<!-- THis script deletes the selected Group -->
+<!-- THis script deletes the selected-->
 <script>
     document.getElementById('deleteGroupBtn').addEventListener('click', function() {
         var groupId = document.getElementById('groupSelect').value;
