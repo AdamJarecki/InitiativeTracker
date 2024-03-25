@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Initiative Tracker Home{% endblock %}
+{% block title %}Sorting Hat{% endblock %}
 
 {% block content %}
 
 <h1></h1>
-<h1 align="center">Welcome to the Initiative Tracker!</h1>
-<h2 align='center'>What would you like to do?</h2>
+<h1 align="center">Welcome to the Sorting Hat!</h1>
+<h2 align='center'>Please input Backstory for sorting!</h2>
 <br><br>
 
 <div align='center'>
@@ -22,9 +22,6 @@
     <!-- Button to view the initiative tracker -->
     <!-- Assuming you have a view function to show the initiative tracker -->
     <a href="{{ url_for('views.initiative_tracker') }}" class="btn btn-success">View Initiative Tracker!</a>
-
-    <!-- Button to jump to the Sorting Hat-->
-    <a href="{{ url_for('views.sorting_hat') }}" class="btn btn-success">Sorting Hat!</a>
 </div>
 
 {% endblock %}
