@@ -27,6 +27,7 @@ class Character(db.Model):
 class SortingHatResults(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    inputBackstoryText = db.Column(db.String(10000))
     strength = db.Column(db.Integer)
     dexterity = db.Column(db.Integer)
     constitution = db.Column(db.Integer)
