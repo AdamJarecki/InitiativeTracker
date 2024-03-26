@@ -109,3 +109,13 @@ def delete_group(group_id):
     db.session.delete(group)
     db.session.commit()
     return jsonify({'success': 'Group deleted successfully'}), 200
+
+@views.route('/sorting-hat')
+@login_required
+def sorting_hat():
+    return render_template("sorting-hat.html", user=current_user)
+
+@views.route('/sorting-hat-output')
+@login_required
+def sorting_hat_output():
+    return render_template("sorting-hat-output.html", user=current_user)
