@@ -4,7 +4,6 @@
 
 {% block content %}
 
-<h1></h1>
 <h1 align="center">Welcome to the Sorting Hat!</h1>
 <h2 align='center'>Please input Backstory for sorting!</h2>
 <br><br>
@@ -13,8 +12,32 @@
     <!-- This adds the textbox area for input. -->
     <form id="sortingHatForm" method="POST" action="/sort">
         <label for="backstory">Backstory (Max 10,000 Characters):</label><br>
-        <textarea id="backstory" name="backstory" rows="10" cols="70" style="width: 500px; height: 300px;"></textarea><br><br>
+        <textarea id="backstory" name="backstory" rows="10" cols="70" style="
+            width: 500px; 
+            height: 300px; 
+            border: 2px solid #4A5568; 
+            border-radius: 8px; 
+            padding: 10px; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #F7FAFC;"
+            maxlength="10000"
+            onfocus="this.style.borderColor='#2B6CB0'; this.style.boxShadow='0 0 0 3px rgba(43,108,176,0.3)';"
+            onblur="this.style.borderColor='#4A5568'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';"
+            oninput="updateCharacterCount()">
+        </textarea><br><br>
+        <div id="characterCount">10000 characters remaining</div>
         <input type="submit" value="Submit"> 
     </form>
 </div>
+
+<script>
+    function updateCharacterCount() {
+        var characterCount = document.getElementById('backstory').value.length;
+        var remainingCharacters = 10000 - characterCount;
+        document.getElementById('characterCount').textContent = remainingCharacters + " characters remaining";
+    }
+</script>
+
 {% endblock %}
