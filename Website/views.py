@@ -118,4 +118,10 @@ def sorting_hat():
 @views.route('/sorting-hat-output')
 @login_required
 def sorting_hat_output():
+    character_info = {
+        'class': 'Rogue',
+        'archetype': 'Thief',
+        'race': 'Elf',
+        'skills': 'Stealth, Sleight of Hand, Acrobatics, Perception, Investigation, Insight, Persuasion, Deception, Intimidation, Performance, Animal Handling, Survival, Nature, History, Arcana, Religion, Medicine, Athletics, and Persuasion.'
+    }
     return render_template("sorting-hat-output.html", user=current_user)

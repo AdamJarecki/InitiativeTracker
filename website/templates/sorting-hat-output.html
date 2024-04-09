@@ -26,16 +26,22 @@
 <div class="attributes-container">
     <dl class="attributes-list">
         <dt>Class:</dt>
-        <dd>- Your Class Here -</dd>
+        <dd>{{ class }}</dd>
         
         <dt>Archetype:</dt>
-        <dd>- Your Archetype Here -</dd>
+        <dd>{{ archetype }}</dd>
         
         <dt>Race:</dt>
-        <dd>- Your Race Here -</dd>
+        <dd>{{ race }}</dd>
         
         <dt>Skills:</dt>
-        <dd>- Your Skills Here -</dd>
+        <dd>{{ skills }}</dd>
+
+        <dt>Background:</dt>
+        <dd>{{ background }}</dd>
+
+        <dt>Alignment:</dt>
+        <dd>{{ alignment }}</dd>
     </dl>
 </div>
 
@@ -67,10 +73,10 @@
 
 .circle span {
     position: absolute;
-    bottom: -20px; /* Adjust based on your preference */
+    bottom: -20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #fff; /* Label background */
+    background-color: #fff;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 14px;
@@ -108,7 +114,7 @@ dd {
     background-color: #f0f0f0;
     color: black;
     text-align: center;
-    line-height: 215px; /* Adjust this to vertically center the text */
+    line-height: 215px; 
     font-weight: bold;
     font-size: 1em;
     border: 2px solid #000;
