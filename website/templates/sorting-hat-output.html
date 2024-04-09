@@ -9,7 +9,115 @@
 <br><br>
 
 <div align='center'>
+    <div class="circle-container">
+        <div class="circle"><span>STR</span></div>
+        <div class="circle"><span>DEX</span></div>
+        <div class="circle"><span>CON</span></div>
+        <div class="circle"><span>INT</span></div>
+        <div class="circle"><span>WIS</span></div>
+        <div class="circle"><span>CHA</span></div>
+    </div>
+
+    <br><br>
+
 
 </div>
+
+<div class="attributes-container">
+    <dl class="attributes-list">
+        <dt>Class:</dt>
+        <dd>- Your Class Here -</dd>
+        
+        <dt>Archetype:</dt>
+        <dd>- Your Archetype Here -</dd>
+        
+        <dt>Race:</dt>
+        <dd>- Your Race Here -</dd>
+        
+        <dt>Skills:</dt>
+        <dd>- Your Skills Here -</dd>
+    </dl>
+</div>
+
+<div class="ac-container">
+    AC
+</div>
+<br><br>
+<div align="center">
+    <button type="submit" class="btn btn-primary">Re-roll</button>
+    <br><br>
+    <button type="submit" class="btn btn-primary">Add to Group</button>
+</div>
+<style>
+.circle-container {
+    text-align: center;
+}
+
+.circle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px; /* Circle size */
+    height: 100px; /* Circle size */
+    margin: 10px;
+    background-color: #f0f0f0; /* Circle color */
+    border-radius: 50%;
+    position: relative;
+}
+
+.circle span {
+    position: absolute;
+    bottom: -20px; /* Adjust based on your preference */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff; /* Label background */
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.attributes-list {
+    text-align: left;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.attributes-container {
+    text-align: left;
+    padding-left: 20%; /* Adds a buffer to the left */
+    width: 80%; 
+    margin: auto;
+}
+
+.ac-container {
+    position: absolute;
+    top: 45%;
+    right: 30%;
+    width: 100px; /* Square size */
+    height: 100px;
+    background-color: #f0f0f0;
+    color: black;
+    text-align: center;
+    line-height: 215px; /* Adjust this to vertically center the text */
+    font-weight: bold;
+    font-size: 1em;
+    border: 2px solid #000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateX(50%);
+}
+
+</style>
+
+
 
 {% endblock %}
