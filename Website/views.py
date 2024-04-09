@@ -122,6 +122,8 @@ def sorting_hat_output():
         'class': 'Rogue',
         'archetype': 'Thief',
         'race': 'Elf',
-        'skills': 'Stealth, Sleight of Hand, Acrobatics, Perception, Investigation, Insight, Persuasion, Deception, Intimidation, Performance, Animal Handling, Survival, Nature, History, Arcana, Religion, Medicine, Athletics, and Persuasion.'
+        'skills': 'Stealth, Sleight of Hand, Acrobatics, Perception, Investigation, Insight, Persuasion, Deception, Intimidation, Performance, Animal Handling, Survival, Nature, History, Arcana, Religion, Medicine, Athletics, and Persuasion.',
+        'background': 'Criminal',
+        'alignment': 'Chaotic Neutral'
     }
-    return render_template("sorting-hat-output.html", user=current_user)
+    return render_template("sorting-hat-output.html", user=current_user, **character_info)
