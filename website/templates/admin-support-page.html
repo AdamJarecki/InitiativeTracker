@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Support{% endblock %}
+
+{% block content %}
+
+<h1></h1>
+<h1 align="center">Admin functions</h1>
+<h2 align='center'>These functions are intended to update the database directly</h2>
+
+<br><br>
+
+<div align='center'>
+    <form action="{{ url_for('auth.sign_up') }}" method="post">
+        <input type="text" name="email" placeholder="Email" required><br><br>
+        <input type="password" name="password" placeholder="Password" required><br><br>
+        <input type="text" name="first_name" placeholder="First Name" required><br><br>
+        <button type="submit" class="btn btn-primary">Add User</button>
+        <br>
+    </form>
+        <!-- Button to delete a user, against their will, and visciously -->
+        <button type="delete" class="btn btn-danger">Delete User</button>
+        <br><br><br>
+    <form action="{{ url_for('views.create_character') }}" method="post">
+        <!-- Button to add a character to the sorting hat (so as to display something before anyone has done anthing) -->
+        <input type="text" name="charClass" placeholder="Character Class" required><br>
+        <input type="text" name="charArchetype" placeholder="Character Archetype" required><br>
+        <input type="text" name="charRace" placeholder="Character Race" required><br>
+        <input type="text" name="charBackground" placeholder="Character Background" required><br>
+        <input type="text" name="charAlignment" placeholder="Character Alignment" required><br>
+        <input type="text" name="charSkills" placeholder="Character Skill Proficiencies" required><br>
+        <input type="number" name="str" placeholder="Character Strength" required>
+        <input type="number" name="dex" placeholder="Character Dexterity" required>
+        <input type="number" name="con" placeholder="Character Constitution" required>
+        <input type="number" name="int" placeholder="Character Intelligence" required>
+        <input type="number" name="wis" placeholder="Character Wisdom" required>
+        <input type="number" name="cha" placeholder="Character Charisma" required><br>
+        <button type="submit" class="btn btn-secondary">Create Character for Sorting Hat</button>
+        <br><br><br>
+    </form>
+        <!-- Button to RickRoll the unsuspecting-->
+        <a href="https://youtu.be/dQw4w9WgXcQ?si=XZYaLihKY6Tbh6RA" class="btn btn-danger">Click Here to Continue</a>
+        <br><br><br>
+    <br><br><br>
+    
+
+    
+
+
+    
+
+</div>
+
+{% endblock %}

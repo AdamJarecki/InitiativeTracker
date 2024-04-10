@@ -127,3 +127,13 @@ def sorting_hat_output():
         'alignment': 'Chaotic Neutral'
     }
     return render_template("sorting-hat-output.html", user=current_user, **character_info)
+
+@views.route('/admin-support-page')
+@login_required
+def admin_support_page():
+    return render_template("admin-support-page.html", user=current_user)
+
+@views.route('/create-character')
+@login_required
+def create_character():
+    return render_template("create-character.html", user=current_user)
