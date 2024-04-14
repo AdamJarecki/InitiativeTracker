@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ml"
+version = "0.1.0"
+description = ""
+authors = ["Sudip Aryal <saryal@leomail.tamuc.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+scikit-learn = "^1.4.2"
+pandas = "^2.2.2"
+transformers = "^4.39.3"
+torch = "^2.2.2"
+torchtext = "^0.17.2"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+black = "^24.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
