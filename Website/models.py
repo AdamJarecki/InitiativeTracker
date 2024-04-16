@@ -24,10 +24,14 @@ class Character(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     group = db.relationship('Group', backref=db.backref('characers', lazy=True))
 
+class SortingHatBackground(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    backgroundText = db.Column(db.String(10000))
+
 class SortingHatResults(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    inputBackstoryText = db.Column(db.String(10000))
     str = db.Column(db.Integer)
     dex = db.Column(db.Integer)
     con = db.Column(db.Integer)

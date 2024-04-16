@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -19,7 +18,10 @@ def create_app():
 
     from .views import views
     from .auth import auth
-    from .models import User, Group, Character
+    from .models import User, Group, Character, SortingHatBackground, SortingHatResults
+
+    with app.app_context():
+        db.create_all()
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

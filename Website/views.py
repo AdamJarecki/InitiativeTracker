@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
-from .models import Group, db, Character
+from .models import Group, db, Character, SortingHatResults, SortingHatBackground
 
 
 views = Blueprint('views', __name__)
@@ -137,3 +137,41 @@ def admin_support_page():
 @login_required
 def create_character():
     return render_template("create-character.html", user=current_user)
+
+
+# Lets see if I can do this...
+@views.route('/admin-support-page', methods=['GET', 'POST'])
+@login_required
+def edit_sorting_hat():
+    groups = SortingHatResults.query.filter_by(user_id=current_user.id).all()  # Fetch all groups for the dropdown
+
+    if request.method == 'POST':
+        # Retrieve the selected SortingHatResults's ID from the form data
+        selected_SortingHatResults_id = request.form.get('sortingHatResults')
+        if sortingHatResults := SortingHatResults.query.get(selected_SortingHatResults_id):
+            # Retrieve character names and initiative bonuses from the form
+            character_names = request.form.getlist('char_name[]')
+            initiative_bonuses = request.form.getlist('initiative[]')
+
+            # Add the new characters to the DB, associating them with the selected group
+            for name, bonus in zip(character_names, initiative_bonuses):
+                new_character = Character(character_name=name, initiative_bonus=bonus, sortingHatResults=sortingHatResults.id)
+                db.session.add(new_character)
+            db.session.commit()  # Commit once after adding all new characters
+            flash('Group updated successfully!', category='success')
+        else:
+            flash('Selected group not found.', category='error')
+    return render_template("edit-group.html", groups=groups, user=current_user)
+
+@views.route('/sort' , methods=['GET', 'POST'])
+@login_required
+def sort():
+    if request.method == 'POST':
+        background_text = request.form.get('background_text')
+        new_background = SortingHatBackground(user_id=current_user.id, backgroundText=background_text)
+        db.session.add(new_background)
+        db.session.commit()
+        return redirect(url_for('views.sorting_hat_output'))
+    return render_template("sort.html", user=current_user)
+
+
