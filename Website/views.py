@@ -5,6 +5,8 @@ from .models import Group, db, Character, SortingHatResults, SortingHatBackgroun
 
 views = Blueprint('views', __name__)
 
+
+
 @views.route('/')
 @login_required
 def home():
@@ -118,14 +120,18 @@ def sorting_hat():
 @views.route('/sorting-hat-output')
 @login_required
 def sorting_hat_output():
+    result = SortingHatResults.query.filter_by(user_id=current_user.id).first()
+    if result is None:
+        return redirect(url_for('views.sorting_hat'))
     character_info = {
-        'class': 'Rogue',
-        'archetype': 'Thief',
-        'race': 'Elf',
-        'skills': 'Stealth, Sleight of Hand, Acrobatics, Perception, Investigation, Insight, Persuasion, Deception, Intimidation, Performance, Animal Handling, Survival, Nature, History, Arcana, Religion, Medicine, Athletics, and Persuasion.',
-        'background': 'Criminal',
-        'alignment': 'Chaotic Neutral'
+        'class': result.charClass,
+        'archetype': result.charArchetype,
+        'race': result.charRace,
+        'skills': result.skillProficiencies.split(', '),
+        'background': result.charBackground,
+        'alignment': result.charAlignment
     }
+    flash('Created!', category='success')
     return render_template("sorting-hat-output.html", user=current_user, **character_info)
 
 @views.route('/admin-support-page')
@@ -140,7 +146,7 @@ def create_character():
 
 
 # Lets see if I can do this...
-@views.route('/admin-support-page', methods=['GET', 'POST'])
+@views.route('/sorting-hat', methods=['GET', 'POST'])
 @login_required
 def edit_sorting_hat():
     groups = SortingHatResults.query.filter_by(user_id=current_user.id).all()  # Fetch all groups for the dropdown
